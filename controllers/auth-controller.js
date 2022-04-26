@@ -3,6 +3,7 @@ const Usuario = require('../models/usuario');
 const bcrypt = require('bcryptjs');
 const { generarJWT } = require('../helpers/jwt');
 const { googleVerify } = require('../helpers/google-verify');
+const { json } = require('express/lib/response');
 
 
 
@@ -101,7 +102,21 @@ const googleSignIn = async(req, res = response) => {
 
 }
 
+const renewToken = async(req, res = response) => {
+
+
+    const uId = req.uid;
+    //Generar json web token
+    const token = await generarJWT(uId);
+
+    res.json({
+        ok: true,
+        token
+    });
+}
+
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renewToken
 }
